@@ -1,0 +1,8 @@
+{
+  "name": "curso-javascript-hcode-calculadora",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/victor-magaldi/curso-javascript-hcode-calculadora",
+  "author": "Victor de Souza Magaldi <victmagaldi@hotmail.com>",
+  "license": "MIT"
+}
