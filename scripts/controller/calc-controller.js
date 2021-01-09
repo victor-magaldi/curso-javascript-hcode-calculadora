@@ -1,28 +1,50 @@
 class CalcController {
   constructor() {
-    this._displayCalc = "0";
-    this._currentDate;
+    this._locale = "pt-BR";
+    this._displayCalcEl = document.querySelector("#display");
+    this._dateEl = document.querySelector("#data");
+    this._timeEl = document.querySelector("#hora");
+
     this.initialize();
   }
   initialize() {
-    let displayCalcEl = document.querySelector("#display");
-    let dateEl = document.querySelector("#data");
-    let timeEl = document.querySelector("#hora");
-    displayCalcEl.innerHTML = "01";
-    dateEl.innerHTML = "02";
-    timeEl.innerHTML = "03";
+    this.setDisplayDateTime();
+    setInterval(() => {
+      this.setDisplayDateTime();
+    }, 1000);
+  }
+  setDisplayDateTime() {
+    this.displayDate = this.currentDate.toLocaleDateString(this._locale, {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+    this.displayTime = this.currentDate.toLocaleTimeString(this._locale);
   }
   //   com get  e set é possivel acessar os atributos e metodos privados (calcuadora.displayCalc() iria funcionar)
-  get displayCalc() {
-    return this._displayCalc;
+  get displayTime() {
+    return this._timeEl.innerHTML;
   }
-  set displayCalc(novoValor) {
-    this._displayCalc = novoValor;
+  get displayDate() {
+    return this._dateEl.innerHTML;
+  }
+  get displayCalc() {
+    return this._displayCalcEl.innerHTML;
   }
   get currentDate() {
-    return this._currentDate;
+    return new Date();
   }
-  set currentDate(novoValor) {
-    this._currentDate = novoValor;
+
+  set currentDate(value) {
+    this._dateEl.innerHTML = value;
+  }
+  set displayDate(value) {
+    this._dateEl.innerHTML = value;
+  }
+  set displayCalc(value) {
+    this._displayCalcEl.innerHTML = value;
+  }
+  set displayTime(value) {
+    this._timeEl.innerHTML = value;
   }
 }
