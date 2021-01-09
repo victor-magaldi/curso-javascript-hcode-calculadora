@@ -12,7 +12,9 @@ class CalcController {
     setInterval(() => {
       this.setDisplayDateTime();
     }, 1000);
+    this.initButtonEvents();
   }
+
   setDisplayDateTime() {
     this.displayDate = this.currentDate.toLocaleDateString(this._locale, {
       day: "2-digit",
@@ -20,6 +22,23 @@ class CalcController {
       year: "numeric",
     });
     this.displayTime = this.currentDate.toLocaleTimeString(this._locale);
+  }
+  addEventListenerAll(element, evts, fn) {
+    evts.split(" ").forEach((evt) => {
+      element.addEventListener(evt, fn, false);
+    });
+  }
+  initButtonEvents() {
+    let buttons = document.querySelectorAll("#buttons > g, #parts g");
+    buttons.forEach((btn) => {
+      this.addEventListenerAll(btn, "click", (e) =>
+        console.log(btn.className.baseVal.replace("btn-", ""))
+      );
+
+      this.addEventListenerAll(btn, "mouseover mouseup mousedowns", (e) => {
+        btn.style.cursor = "pointer";
+      });
+    });
   }
   //   com get  e set é possivel acessar os atributos e metodos privados (calcuadora.displayCalc() iria funcionar)
   get displayTime() {
