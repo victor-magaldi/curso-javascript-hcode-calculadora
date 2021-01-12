@@ -37,12 +37,24 @@ class CalcController {
   setError() {
     this.displayCalc = "Error";
   }
+  getLastOperation() {
+    return this._operation[this._operation.length - 1];
+  }
+  isOperator() {}
   addOperator(value) {
-    this._operation.push(value);
     console.log(this._operation);
+    if (isNaN(this.getLastOperation())) {
+      if(){
+
+      }else if(){}
+    } else {
+      console.log(this.getLastOperation().toString());
+      console.log(value);
+      let newValue = this.getLastOperation().toString() + value.toString();
+      this._operation.push(newValue);
+    }
   }
   execbtn(value) {
-    console.log(value);
     switch (value) {
       case "ac":
         this.cleaAll();
@@ -52,7 +64,6 @@ class CalcController {
         break;
       case "soma":
         this.addOperator("+");
-
         break;
       case "subtracao":
         this.addOperator("-");
@@ -65,6 +76,11 @@ class CalcController {
         break;
       case "porcento":
         this.cleaAll();
+        break;
+      case "igual":
+        this.cleaAll();
+        break;
+      case "ponto":
         break;
       case "0":
       case "1":
