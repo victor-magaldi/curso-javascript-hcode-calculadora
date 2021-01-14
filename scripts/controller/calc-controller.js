@@ -1,5 +1,7 @@
 class CalcController {
    constructor() {
+      this._lastOperator = "";
+      this._lastNumber = "";
       this._locale = "pt-BR";
       this._displayCalcEl = document.querySelector("#display");
       this._dateEl = document.querySelector("#data");
@@ -56,33 +58,61 @@ class CalcController {
          this.calc();
       }
    }
+   getResult() {
+      return eval(this._operation.join(""));
+   }
    calc() {
       let last = "";
-      if (this._operation.length > 3) {
-         let last = this._operation.pop();
+
+      this._lastOperator = this.getLastItem();
+
+      if (this._operation.length < 3) {
+         let firstItem = this._operation[0];
+         this._operation = [firstItem, this._lastOperator, this._lastNumber];
       }
-      let result = eval(this._operation.join(""));
-      if (last == "%") {
+
+      if (this._operation.length > 3) {
+         last = this._operation.pop();
+         this._lastNumber = this.getResult();
+      } else if (this._operation.length === 3) {
+         this._lastNumber = this.getLastItem(false);
+      }
+      console.log("last n", this._lastNumber);
+      console.log("last n", this._lastOperator);
+
+      let result = this.getResult();
+
+      if (last === "%") {
          result /= 100;
          this._operation = [result];
       } else {
          this._operation = [result];
+
          if (last) this._operation.push(last);
       }
+
       this.setLastNumberDisplay();
    }
-   setLastNumberDisplay() {
-      let lastNumber;
+   getLastItem(isOperator = true) {
+      let lastItem;
+
       for (let i = this._operation.length - 1; i >= 0; i--) {
-         console.log(this._operation.length);
-
-         if (!this.isOperator(this._operation[i])) {
-            lastNumber = this._operation[i];
-
-            this.displayCalc = lastNumber;
+         if (this.isOperator(this._operation[i]) === isOperator) {
+            lastItem = this._operation[i];
             break;
          }
       }
+
+      if (!lastItem) {
+         lastItem = isOperator ? this._lastOperator : this._lastNumber;
+      }
+
+      return lastItem;
+   }
+
+   setLastNumberDisplay() {
+      let lastNumber = this.getLastItem(false);
+
       if (!lastNumber) lastNumber = 0;
       this.displayCalc = lastNumber;
    }
@@ -174,12 +204,15 @@ class CalcController {
    get displayTime() {
       return this._timeEl.innerHTML;
    }
+
    get displayDate() {
       return this._dateEl.innerHTML;
    }
+
    get displayCalc() {
       return this._displayCalcEl.innerHTML;
    }
+
    get currentDate() {
       return new Date();
    }
@@ -187,12 +220,15 @@ class CalcController {
    set currentDate(value) {
       this._dateEl.innerHTML = value;
    }
+
    set displayDate(value) {
       this._dateEl.innerHTML = value;
    }
+
    set displayCalc(value) {
       this._displayCalcEl.innerHTML = value;
    }
+
    set displayTime(value) {
       this._timeEl.innerHTML = value;
    }
