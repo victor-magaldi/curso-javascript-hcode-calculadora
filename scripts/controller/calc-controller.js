@@ -8,6 +8,7 @@ class CalcController {
       this._timeEl = document.querySelector("#hora");
       this._operation = [];
       this.initialize();
+      this.initKeyboard();
    }
    initialize() {
       this.setDisplayDateTime();
@@ -17,7 +18,47 @@ class CalcController {
       this.initButtonEvents();
       this.setLastNumberDisplay();
    }
+   initKeyboard() {
+      document.addEventListener("keyup", (evt) => {
+         console.log(evt.key);
 
+         switch (evt.key) {
+            case "Escape":
+               this.cleaAll();
+               break;
+            case "Backspace":
+               this.clearEntry();
+               break;
+            case "+":
+            case "/":
+            case "-":
+            case "*":
+            case "%":
+               this.addOperator(evt.key);
+               break;
+            case "Enter":
+            case "=":
+               this.calc();
+               break;
+            case ".":
+            case ",":
+               this.addDot();
+               break;
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+               this.addOperator(parseInt(evt.key));
+               break;
+         }
+      });
+   }
    setDisplayDateTime() {
       this.displayDate = this.currentDate.toLocaleDateString(this._locale, {
          day: "2-digit",
@@ -33,6 +74,8 @@ class CalcController {
    }
    cleaAll() {
       this._operation = [];
+      this._lastNumber = "";
+      this._lastOperator = "";
       this.setLastNumberDisplay();
    }
    clearEntry() {
@@ -79,8 +122,6 @@ class CalcController {
       } else if (this._operation.length === 3) {
          this._lastNumber = this.getLastItem(false);
       }
-      console.log("last n", this._lastNumber);
-      console.log("last n", this._lastOperator);
 
       let result = this.getResult();
 
@@ -153,7 +194,6 @@ class CalcController {
             this.setLastNumberDisplay();
          }
       }
-      console.log(this._operation);
    }
    execbtn(value) {
       switch (value) {
