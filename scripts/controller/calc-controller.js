@@ -46,10 +46,10 @@ class CalcController {
       });
    }
    toggleAudio() {
-      this._audioOnOf = !this._audioOnOf;
+      this._audioOnOff = !this._audioOnOff;
    }
    playAudio() {
-      if (this._audioOnOf) {
+      if (this._audioOnOff) {
          this._audio.currentTime = 0;
          this._audio.play();
       }
